@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weather App</title>
+  <style>
+    :root {
+      --bg-light: #f2f2f2;
+      --text-light: #333;
+      --card-light: #ffffff;
+
+      --bg-dark: #1c1c1e;
+      --text-dark: #eaeaea;
+      --card-dark: #2c2c2e;
+
+      --primary: #4285f4;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      background-size: cover;
+      background-position: center;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .search-box {
+      display: flex;
+      max-width: 400px;
+      width: 100%;
+      background: var(--card-light);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: background 0.5s ease;
+    }
+
+    body.dark .search-box {
+      background: var(--card-dark);
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      background: transparent;
+      color: inherit;
+    }
+
+    .search-box button {
+      background: var(--primary);
+      color: #fff;
+      padding: 0 20px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .weather-card {
+      background: var(--card-light);
+      margin-top: 30px;
+      padding: 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 90%;
+      max-width: 400px;
+      transition: background 0.5s ease;
+    }
+
+    body.dark .weather-card {
+      background: var(--card-dark);
+    }
+
+    .temp {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .weather-main {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+    }
+
+    .details {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .forecast {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    .day-card {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 10px;
+      min-width: 100px;
+      text-align: center;
+      color: #000;
+    }
+
+    body.dark .day-card {
+      background: rgba(44, 44, 46, 0.9);
+      color: #fff;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-mode" onclick="toggleMode()">Toggle Mode</button>
+  <h1>🌤️ Weather App</h1>
+
+  <form class="search-box" onsubmit="event.preventDefault(); getWeather();">
+    <input type="text" id="cityInput" placeholder="Enter city name" required />
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="weather-card" id="weatherInfo">
+    <p>Search for a city to view weather.</p>
+  </div>
+
+  <div class="forecast" id="forecast"></div>
+
+  <div class="footer">Powered by OpenWeatherMap</div>
+
+  <script>
+    const apiKey = "f34c38afb6919f77838f007baf594534";
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    function getWeather() {
+      const city = document.getElementById("cityInput").value.trim();
+      if (!city) {
+        alert("Please enter a city name.");
+        return;
+      }
+
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+      const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
+      fetch(weatherUrl)
+        .then(res => res.json())
+        .then(data => {
+          const weatherInfo = document.getElementById("weatherInfo");
+          const { name, main, weather, wind, sys } = data;
+          const iconUrl = `https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`;
+          const background = getBackground(weather[0].main);
+          document.body.style.backgroundImage = `url('${background}')`;
+
+          weatherInfo.innerHTML = `
+            <h2>${name}, ${sys.country}</h2>
+            <img class="icon" src="${iconUrl}" alt="${weather[0].description}" />
+            <div class="temp">${main.temp.toFixed(1)}°C</div>
+            <div class="weather-main">${weather[0].main}</div>
+            <div class="details">
+              <p>Feels like: ${main.feels_like}°C</p>
+              <p>Humidity: ${main.humidity}%</p>
+              <p>Wind: ${wind.speed} m/s</p>
+            </div>
+          `;
+        });
+
+      fetch(forecastUrl)
+        .then(res => res.json())
+        .then(data => {
+          const forecastDiv = document.getElementById("forecast");
+          const days = {};
+
+          data.list.forEach(item => {
+            const date = item.dt_txt.split(" ")[0];
+            if (!days[date] && Object.keys(days).length < 5) {
+              days[date] = item;
+            }
+          });
+
+          forecastDiv.innerHTML = Object.entries(days).map(([date, info]) => {
+            const icon = info.weather[0].icon;
+            const desc = info.weather[0].main;
+            const temp = info.main.temp.toFixed(1);
+            const day = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+
+            return `
+              <div class="day-card">
+                <strong>${day}</strong>
+                <img src="https://openweathermap.org/img/wn/${icon}.png" alt="${desc}" />
+                <div>${temp}°C</div>
+                <small>${desc}</small>
+              </div>
+            `;
+          }).join('');
+        });
+    }
+
+    function getBackground(condition) {
+      const cond = condition.toLowerCase();
+      if (cond.includes("cloud")) return "https://i.imgur.com/Xz3ZKzj.jpg";
+      if (cond.includes("rain")) return "https://i.imgur.com/GJcWRfs.jpg";
+      if (cond.includes("snow")) return "https://i.imgur.com/V7P6mHh.jpg";
+      if (cond.includes("clear")) return "https://i.imgur.com/MvMZKpA.jpg";
+      return "https://i.imgur.com/Bn4lLVo.jpg";
+    }
+  </script>
+</body>
+</html>

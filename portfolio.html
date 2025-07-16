@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rudra Dev Singh | Portfolio</title>
+  <style>
+    :root {
+      --primary: #0d6efd;
+      --text-dark: #212529;
+      --text-light: #ffffff;
+      --bg-light: #f8f9fa;
+      --bg-dark: #121212;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 10px;
+    }
+
+    nav {
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    body.dark .card {
+      background: #1f1f1f;
+    }
+
+    .resume-download {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .resume-download a {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    ul.skills-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    ul.skills-list li {
+      background: var(--primary);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+    }
+
+    .project-card {
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--primary);
+      color: white;
+    }
+
+    .contact-links a {
+      display: inline-block;
+      margin-right: 10px;
+      color: var(--primary);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Rudra Dev Singh</h1>
+    <p>Second-year B.Tech CSE (AI) Student | Web Developer | AI Enthusiast</p>
+    <div class="resume-download">
+      <a href="Rudra_Dev_Singh_Resume.pdf" download>📄 Download Resume - Rudra</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#profile">Profile</a>
+    <a href="#education">Education</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="profile" class="card">
+    <h2>Profile</h2>
+    <p>Hi, I'm Rudra Dev Singh, a second-year B.Tech student specializing in Computer Science and Engineering with a focus on Artificial Intelligence. I'm passionate about cutting-edge technologies like machine learning, data science, and software development. With a strong foundation in programming (Python, Java, C) and web development (HTML, CSS, JavaScript), I'm continuously exploring how AI can solve real-world problems.</p>
+    <p>I'm currently building projects that merge AI with practical applications, and I'm eager to learn more about deep learning, NLP, and full-stack development. I enjoy working on collaborative tech projects and am actively expanding my skills through hands-on experience, online certifications, and hackathons.</p>
+  </section>
+
+  <section id="education" class="card">
+    <h2>Education</h2>
+    <p><strong>B.Tech in Computer Science and Engineering (AI)</strong><br>Noida Institute of Engineering and Technology, 2024 – 2028</p>
+  </section>
+
+  <section id="experience" class="card">
+    <h2>Experience</h2>
+    <p><strong>Web Development Intern – Prodigy Infotech</strong><br>Summer 2025</p>
+    <p>Worked on building responsive web pages and improving front-end functionality using HTML, CSS, and JavaScript.</p>
+  </section>
+
+  <section id="skills" class="card">
+    <h2>Skills</h2>
+    <ul class="skills-list">
+      <li>Python</li>
+      <li>Java</li>
+      <li>C</li>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+    </ul>
+  </section>
+
+  <section id="projects" class="card">
+    <h2>Projects</h2>
+    <div class="project-card">
+      <h3>Tic-Tac-Toe Game</h3>
+      <p>A modern web-based two-player game with an intuitive UI and dark mode support.</p>
+    </div>
+    <div class="project-card">
+      <h3>Weather App</h3>
+      <p>Shows real-time weather info and 5-day forecast with dynamic backgrounds.</p>
+    </div>
+    <div class="project-card">
+      <h3>Stopwatch Web App</h3>
+      <p>Stylish stopwatch with vibrant UI, lap tracking, and millisecond accuracy.</p>
+    </div>
+    <div class="project-card">
+      <h3>Portfolio Website</h3>
+      <p>Personal portfolio to showcase skills, projects, and contact details — this very site!</p>
+    </div>
+  </section>
+
+  <section id="contact" class="card">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:rudradev900@gmail.com">rudradev900@gmail.com</a></p>
+    <div class="contact-links">
+      <a href="https://linkedin.com/in/rudra-dev-singh" target="_blank">LinkedIn</a>
+      <a href="https://github.com/rudra0807" target="_blank">GitHub</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Rudra Dev Singh — All Rights Reserved.
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+  </script>
+
+</body>
+</html>

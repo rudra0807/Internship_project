@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cool Stopwatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a0033, #330066, #6600cc);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Abstract background shapes */
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      filter: blur(80px);
+      z-index: 0;
+    }
+
+    .circle {
+      width: 250px;
+      height: 250px;
+      background: #00ffff;
+      bottom: 60px;
+      right: 60px;
+    }
+
+    .square {
+      width: 220px;
+      height: 220px;
+      background: #ff0080;
+      top: 80px;
+      left: 80px;
+      border-radius: 20px;
+    }
+
+    .stopwatch-container {
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 30px 50px;
+      border-radius: 25px;
+      backdrop-filter: blur(20px);
+      text-align: center;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+    }
+
+    .display {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .start { background: #00e676; }
+    .stop { background: #ff1744; }
+    .reset { background: #2979ff; }
+    .lap { background: #f500f5; }
+
+    .laps {
+      margin-top: 20px;
+      max-height: 150px;
+      overflow-y: auto;
+      color: #fff;
+      text-align: left;
+    }
+
+    .laps li {
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #ffea00;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .laps::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .laps::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background shapes -->
+  <div class="shape circle"></div>
+  <div class="shape square"></div>
+
+  <!-- Stopwatch UI -->
+  <div class="stopwatch-container">
+    <div class="display" id="display">00 : 00 : 00 : 000</div>
+    <div class="buttons">
+      <button class="start" onclick="start()">Start</button>
+      <button class="stop" onclick="stop()">Stop</button>
+      <button class="reset" onclick="reset()">Reset</button>
+      <button class="lap" onclick="lap()">Lap</button>
+    </div>
+    <ul class="laps" id="laps"></ul>
+  </div>
+
+  <script>
+    let startTime, elapsed = 0, interval = null;
+
+    function formatTime(ms) {
+      const h = String(Math.floor(ms / 3600000)).padStart(2, '0');
+      const m = String(Math.floor((ms % 3600000) / 60000)).padStart(2, '0');
+      const s = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+      const msPart = String(ms % 1000).padStart(3, '0');
+      return `${h} : ${m} : ${s} : ${msPart}`;
+    }
+
+    function updateDisplay() {
+      const now = Date.now();
+      const time = now - startTime + elapsed;
+      document.getElementById('display').textContent = formatTime(time);
+    }
+
+    function start() {
+      if (interval) return;
+      startTime = Date.now();
+      interval = setInterval(updateDisplay, 10);
+    }
+
+    function stop() {
+      if (!interval) return;
+      clearInterval(interval);
+      interval = null;
+      elapsed += Date.now() - startTime;
+    }
+
+    function reset() {
+      clearInterval(interval);
+      interval = null;
+      elapsed = 0;
+      document.getElementById('display').textContent = "00 : 00 : 00 : 000";
+      document.getElementById('laps').innerHTML = "";
+    }
+
+    function lap() {
+      const lapTime = document.getElementById('display').textContent;
+      const lapList = document.getElementById('laps');
+      const li = document.createElement('li');
+      li.textContent = `Lap ${lapList.children.length + 1}: ${lapTime}`;
+      lapList.prepend(li);
+    }
+  </script>
+</body>
+</html>
